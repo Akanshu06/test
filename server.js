@@ -18,6 +18,10 @@ const startServer = async () => {
     try {
         await db.authenticate();
         console.log('Database connected successfully.');
+        
+        await db.sync({ force: false });
+        console.log('Database synced successfully.');
+        
         app.listen(port, () => {
             console.log(`Example app listening on port ${port}`);
         });

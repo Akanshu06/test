@@ -20,15 +20,12 @@ const signUp = async (req,res)=>{
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-    const existingUser = await user.findOne({ where: { email } });
-    if (!existingUser) {
-        return res.status(404).json({ message: 'User not found' });
+    
+    if (email !== 'admin@codesfortomorrow.com' || password !== 'Admin123!@#') {
+        return res.status(401).json({ message: 'Invalid credentials' });
     }
-    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
-    if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid password' });
-    }
-    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+    const token = jwt.sign({ id: 1, email: 'admin@codesfortomorrow.com' }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.status(200).json({ token });
 }
 
